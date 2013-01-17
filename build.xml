@@ -65,6 +65,9 @@
     <jar destfile="${app.jar.path}">
       <fileset dir="${classes.path}" 
         excludes="**/*Test.class"/> 
+        <fileset dir="${source.path}" 
+          includes="**/*.java" 
+          excludes="**/*Test.java"/> 
     </jar>
     <jar destfile="${source.jar.path}">
       <fileset dir="${source.path}" 

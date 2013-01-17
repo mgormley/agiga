@@ -31,7 +31,9 @@ public class StanfordAgigaSentence extends BasicAgigaSentence implements AgigaSe
 	
 	public static final long serialVersionUID = 1;
 
-    private static final Label ROOT_LABEL = new WordLemmaTag("$WALL$");
+    private static final Label ROOT_LABEL = new WordLemmaTag("ROOT");
+    
+    List<TreeGraphNode> nodes = null;
 
     public StanfordAgigaSentence(AgigaPrefs prefs) {
         super(prefs);
@@ -67,7 +69,8 @@ public class StanfordAgigaSentence extends BasicAgigaSentence implements AgigaSe
      */
     public List<TypedDependency> getStanfordTypedDependencies(DependencyForm form) {
         List<TypedDependency> dependencies = new ArrayList<TypedDependency>();
-        List<TreeGraphNode> nodes = getStanfordTreeGraphNodes(form);
+        if (this.nodes == null)
+        	nodes = getStanfordTreeGraphNodes(form);
 
         List<AgigaTypedDependency> agigaDeps = getAgigaDeps(form);
         for (AgigaTypedDependency agigaDep : agigaDeps) {
@@ -85,7 +88,9 @@ public class StanfordAgigaSentence extends BasicAgigaSentence implements AgigaSe
      * @see edu.jhu.hltcoe.sp.data.depparse.AgigaSentence#getStanfordTreeGraphNodes(edu.jhu.hltcoe.sp.data.depparse.AgigaConstants.DependencyForm)
      */
     public List<TreeGraphNode> getStanfordTreeGraphNodes(DependencyForm form) {
-        List<TreeGraphNode> nodes = new ArrayList<TreeGraphNode>();
+    	if (this.nodes != null) return this.nodes;
+    	
+        this.nodes = new ArrayList<TreeGraphNode>();
         // Add an explicit root node
         nodes.add(new TreeGraphNode(ROOT_LABEL));
         
@@ -93,6 +98,23 @@ public class StanfordAgigaSentence extends BasicAgigaSentence implements AgigaSe
         for (WordLemmaTag curToken : labels) {
             // Create the tree node
             TreeGraphNode treeNode = new TreeGraphNode(curToken);
+            treeNode.label().setTag(curToken.tag());
+            /**
+             * Caution, the order to call is to first setWord(), then setlemma()
+             * From the Stanford source code:
+             *   
+  public void setWord(String word) {
+    set(WordAnnotation.class, word);
+    // pado feb 09: if you change the word, delete the lemma.
+    remove(LemmaAnnotation.class);
+  }
+  
+    public void setLemma(String lemma) {
+    set(LemmaAnnotation.class, lemma);
+  }
+              */
+            treeNode.label().setWord(curToken.word());
+            treeNode.label().setLemma(curToken.lemma());
             nodes.add(treeNode);
         }
 
