@@ -2,6 +2,7 @@ package edu.jhu.agiga;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.io.Serializable;
 import java.util.List;
 
 import edu.jhu.agiga.AgigaConstants.DependencyForm;
@@ -22,7 +23,10 @@ import edu.stanford.nlp.trees.TypedDependency;
  * @author mgormley
  * 
  */
-public interface AgigaSentence {
+public interface AgigaSentence extends Serializable {
+
+	@Override public boolean equals(Object other);
+	@Override public int hashCode();
 
     public int getSentIdx();
 

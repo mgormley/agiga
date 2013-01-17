@@ -1,5 +1,7 @@
 package edu.jhu.agiga;
 
+import java.io.Serializable;
+
 /**
  * Each AgigaMention object represents a single mention of an entity for
  * coreference resolution within a document. Annotated Gigaword does not
@@ -11,7 +13,9 @@ package edu.jhu.agiga;
  * @author mgormley
  * 
  */
-public class AgigaMention {
+public class AgigaMention implements Serializable {
+
+	public static final long serialVersionUID = 1;
 
     public static final int UNASSIGNED = -1;
     // Agiga annotations
@@ -34,6 +38,28 @@ public class AgigaMention {
         this.mucId = UNASSIGNED;
         this.mucRef = UNASSIGNED;
     }
+
+	@Override
+	public int hashCode() {
+		return com.google.common.base.Objects.hashCode(isRepresentative,
+			sentenceIdx, startTokenIdx, endTokenIdx, headTokenIdx, mucId, mucRef);
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if(other == null) return false;
+		if(other instanceof AgigaMention) {
+			AgigaMention o = (AgigaMention) other;
+			return isRepresentative == o.isRepresentative
+				&& sentenceIdx == o.sentenceIdx
+				&& startTokenIdx == o.startTokenIdx
+				&& endTokenIdx == o.endTokenIdx
+				&& headTokenIdx == o.headTokenIdx
+				&& mucId == o.mucId
+				&& mucRef == o.mucRef;
+		}
+		return false;
+	}
 
     public boolean isRepresentative() {
         return isRepresentative;

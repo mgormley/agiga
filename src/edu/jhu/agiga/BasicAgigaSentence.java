@@ -4,6 +4,7 @@ import static edu.jhu.agiga.AgigaSentenceReader.require;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,7 +16,9 @@ import edu.jhu.agiga.AgigaConstants.DependencyForm;
  * @author mgormley
  *
  */
-public class BasicAgigaSentence {
+public class BasicAgigaSentence implements Serializable {
+
+	public static final long serialVersionUID = 1;
 
     protected AgigaPrefs prefs = new AgigaPrefs();
     
@@ -39,6 +42,28 @@ public class BasicAgigaSentence {
     private List<AgigaTypedDependency> basicDeps;
     private List<AgigaTypedDependency> colDeps;
     private List<AgigaTypedDependency> colCcprocDeps;
+
+	@Override
+	public boolean equals(Object other) {
+		if(other == null) return false;
+		if(other instanceof BasicAgigaSentence) {
+			BasicAgigaSentence o = (BasicAgigaSentence) other;
+			return com.google.common.base.Objects.equal(prefs, o.prefs)
+				&& sentIdx == o.sentIdx
+				&& com.google.common.base.Objects.equal(tokens, o.tokens)
+				&& com.google.common.base.Objects.equal(parseText, o.parseText)
+				&& com.google.common.base.Objects.equal(basicDeps, o.basicDeps)
+				&& com.google.common.base.Objects.equal(colDeps, o.colDeps)
+				&& com.google.common.base.Objects.equal(colCcprocDeps, o.colCcprocDeps);
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return com.google.common.base.Objects.hashCode(prefs,
+			sentIdx, tokens, parseText, basicDeps, colDeps, colCcprocDeps);
+	}
 
     public BasicAgigaSentence(AgigaPrefs prefs) {
         this.prefs = prefs;

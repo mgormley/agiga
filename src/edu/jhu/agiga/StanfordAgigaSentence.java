@@ -4,6 +4,7 @@ import static edu.jhu.agiga.AgigaSentenceReader.require;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,9 @@ import edu.stanford.nlp.trees.TypedDependency;
  * @author mgormley
  * 
  */
-public class StanfordAgigaSentence extends BasicAgigaSentence implements AgigaSentence {
+public class StanfordAgigaSentence extends BasicAgigaSentence implements AgigaSentence, Serializable {
+	
+	public static final long serialVersionUID = 1;
 
     private static final Label ROOT_LABEL = new WordLemmaTag("$WALL$");
 

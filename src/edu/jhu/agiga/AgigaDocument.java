@@ -4,6 +4,7 @@ import static edu.jhu.agiga.AgigaSentenceReader.require;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -20,9 +21,11 @@ import org.apache.log4j.Logger;
  * format.
  * 
  * @author mgormley
- * 
+ *
  */
-public class AgigaDocument {
+public class AgigaDocument implements Serializable {
+
+	public static final long serialVersionUID = 1;
 
     private static Logger log = Logger.getLogger(AgigaDocument.class);
 
@@ -31,6 +34,33 @@ public class AgigaDocument {
     private List<AgigaSentence> sents;
     private List<AgigaCoref> corefs;
     private AgigaPrefs prefs;
+
+	@Override
+	public boolean equals(Object other) {
+		if(other == null) return false;
+		if(other instanceof AgigaDocument) {
+			AgigaDocument o = (AgigaDocument) other;
+			return com.google.common.base.Objects.equal(docId, o.docId)
+				&& com.google.common.base.Objects.equal(type, o.type)
+				&& com.google.common.base.Objects.equal(sents, o.sents)
+				&& com.google.common.base.Objects.equal(corefs, o.corefs)
+				&& com.google.common.base.Objects.equal(prefs, o.prefs);
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return com.google.common.base.Objects.hashCode(docId, type, sents, corefs, prefs);
+	}
+
+	public boolean eq(Object a, Object b) {
+		// this is how java implements equals
+		// test with two lists that contain null (they're equal)
+		if(a == null && b == null) return true;
+		if(a != null) return a.equals(b);
+		else return b.equals(a);
+	}
 
     public AgigaDocument(AgigaPrefs prefs) {
         this.prefs = prefs;

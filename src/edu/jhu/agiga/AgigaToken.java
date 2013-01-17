@@ -1,5 +1,7 @@
 package edu.jhu.agiga;
 
+import java.io.Serializable;
+
 /**
  * An AgigaToken object represents a single token and its annotations in the
  * AnnotatedGigaword corpus. This provides access to the word, the lemma, the
@@ -10,7 +12,9 @@ package edu.jhu.agiga;
  * @author mgormley
  * 
  */
-public class AgigaToken {
+public class AgigaToken implements Serializable {
+	
+	public static final long serialVersionUID = 1;
 
     private int tokIdx;
     private String word;
@@ -20,6 +24,29 @@ public class AgigaToken {
     private String posTag;
     private String nerTag;
     private String normNer;
+
+	@Override
+	public boolean equals(Object other) {
+		if(other == null) return false;
+		if(other instanceof AgigaToken) {
+			AgigaToken o = (AgigaToken) other;
+			return tokIdx == o.tokIdx
+				&& com.google.common.base.Objects.equal(word, o.word)
+				&& com.google.common.base.Objects.equal(lemma, o.lemma)
+				&& charOffBegin == o.charOffBegin
+				&& charOffEnd == o.charOffEnd
+				&& com.google.common.base.Objects.equal(posTag, o.posTag)
+				&& com.google.common.base.Objects.equal(nerTag, o.nerTag)
+				&& com.google.common.base.Objects.equal(normNer, o.normNer);
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return com.google.common.base.Objects.hashCode(
+			tokIdx, word, lemma, charOffBegin, charOffEnd, posTag, nerTag, normNer);
+	}
 
     public AgigaToken() {
         // No argument constructor

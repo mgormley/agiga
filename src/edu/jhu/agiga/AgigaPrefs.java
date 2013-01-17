@@ -1,7 +1,7 @@
-/**
- * 
- */
+
 package edu.jhu.agiga;
+
+import java.io.Serializable;
 
 import edu.jhu.agiga.AgigaConstants.DependencyForm;
 
@@ -17,7 +17,9 @@ import edu.jhu.agiga.AgigaConstants.DependencyForm;
  * @author mgormley
  * 
  */
-public class AgigaPrefs {
+public class AgigaPrefs implements Serializable {
+
+	public static final long serialVersionUID = 1;
 
     boolean readWord;
     boolean readLemma;
@@ -29,7 +31,34 @@ public class AgigaPrefs {
     boolean readBasicDeps;
     boolean readColDeps;
     boolean readColCcprocDeps;
-    boolean readCoref;
+	boolean readCoref;
+
+	@Override
+	public boolean equals(Object other) {
+		if(other == null) return false;
+		if(other instanceof AgigaPrefs) {
+			AgigaPrefs o = (AgigaPrefs) other;
+			return readWord == o.readWord
+				&& readLemma == o.readLemma
+				&& readOffsets == o.readOffsets
+				&& readPos == o.readPos
+				&& readNer == o.readNer
+				&& readNormNer == o.readNormNer
+				&& readParse == o.readParse
+				&& readBasicDeps == o.readBasicDeps
+				&& readColDeps == o.readColDeps
+				&& readColCcprocDeps == o.readColCcprocDeps
+				&& readCoref == o.readCoref;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return com.google.common.base.Objects.hashCode(readWord,
+			readLemma, readOffsets, readPos, readNer, readNormNer,
+			readParse, readBasicDeps, readColDeps, readColCcprocDeps, readCoref);
+	}
 
     public AgigaPrefs() {
         setAll(true);
