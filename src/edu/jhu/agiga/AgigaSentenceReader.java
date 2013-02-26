@@ -241,10 +241,10 @@ class AgigaSentenceReader implements Iterable<AgigaSentence>, Iterator<AgigaSent
 
             if (prefs.readOffsets) {
                 require(vn.toElement(VTDNav.NS, AgigaConstants.CHARACTER_OFFSET_BEGIN));
-                int charOffBegin = Integer.parseInt(vn.toString(vn.getText()));
+                int charOffBegin = Integer.parseInt(vn.toString(vn.getText()).trim());
                 agigaToken.setCharOffBegin(charOffBegin);
                 require(vn.toElement(VTDNav.NS, AgigaConstants.CHARACTER_OFFSET_END));
-                int charOffEnd = Integer.parseInt(vn.toString(vn.getText()));
+                int charOffEnd = Integer.parseInt(vn.toString(vn.getText()).trim());
                 agigaToken.setCharOffEnd(charOffEnd);
             }
 
