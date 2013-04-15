@@ -43,8 +43,8 @@ public class AgigaDocument implements Serializable {
 			return com.google.common.base.Objects.equal(docId, o.docId)
 				&& com.google.common.base.Objects.equal(type, o.type)
 				&& com.google.common.base.Objects.equal(sents, o.sents)
-				&& com.google.common.base.Objects.equal(corefs, o.corefs)
-				&& com.google.common.base.Objects.equal(prefs, o.prefs);
+				&& com.google.common.base.Objects.equal(corefs, o.corefs);
+				//&& com.google.common.base.Objects.equal(prefs, o.prefs);
 		}
 		return false;
 	}
@@ -52,14 +52,6 @@ public class AgigaDocument implements Serializable {
 	@Override
 	public int hashCode() {
 		return com.google.common.base.Objects.hashCode(docId, type, sents, corefs, prefs);
-	}
-
-	public boolean eq(Object a, Object b) {
-		// this is how java implements equals
-		// test with two lists that contain null (they're equal)
-		if(a == null && b == null) return true;
-		if(a != null) return a.equals(b);
-		else return b.equals(a);
 	}
 
     public AgigaDocument(AgigaPrefs prefs) {
@@ -81,6 +73,10 @@ public class AgigaDocument implements Serializable {
     public List<AgigaSentence> getSents() {
         return sents;
     }
+
+	public void setSents(List<AgigaSentence> sents) {
+		this.sents = sents;
+	}
 
     public List<AgigaCoref> getCorefs() {
         return corefs;
