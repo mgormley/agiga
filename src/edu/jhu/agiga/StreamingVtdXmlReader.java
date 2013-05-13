@@ -34,7 +34,6 @@ public abstract class StreamingVtdXmlReader<T> implements Iterable<T>, Iterator<
     private static Logger log = Logger.getLogger(StreamingVtdXmlReader.class);
 
     private String fileId;
-    private boolean hasNext;
     private int numSents;
     private int numDocs;
     private BufferedReader reader;
@@ -48,7 +47,7 @@ public abstract class StreamingVtdXmlReader<T> implements Iterable<T>, Iterator<
             if (inputFile.endsWith(".gz")) {
                 inputStream = new GZIPInputStream(inputStream);
             }
-            reader = new BufferedReader(new InputStreamReader(inputStream));
+            reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
             fileId = getFileId(reader);
         } catch (IOException e) {
             throw new RuntimeException(e);
