@@ -55,7 +55,7 @@ public class AgigaPrefs implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return com.google.common.base.Objects.hashCode(readWord,
+		return Util.safeHashCode(readWord,
 			readLemma, readOffsets, readPos, readNer, readNormNer,
 			readParse, readBasicDeps, readColDeps, readColCcprocDeps, readCoref);
 	}

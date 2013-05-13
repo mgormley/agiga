@@ -40,18 +40,18 @@ public class AgigaDocument implements Serializable {
 		if(other == null) return false;
 		if(other instanceof AgigaDocument) {
 			AgigaDocument o = (AgigaDocument) other;
-			return com.google.common.base.Objects.equal(docId, o.docId)
-				&& com.google.common.base.Objects.equal(type, o.type)
-				&& com.google.common.base.Objects.equal(sents, o.sents)
-				&& com.google.common.base.Objects.equal(corefs, o.corefs);
-				//&& com.google.common.base.Objects.equal(prefs, o.prefs);
+			return Util.safeEquals(docId, o.docId)
+				&& Util.safeEquals(type, o.type)
+				&& Util.safeEquals(sents, o.sents)
+				&& Util.safeEquals(corefs, o.corefs);
+				//&& Util.safeEquals(prefs, o.prefs);
 		}
 		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		return com.google.common.base.Objects.hashCode(docId, type, sents, corefs, prefs);
+		return Util.safeHashCode(docId, type, sents, corefs, prefs);
 	}
 
     public AgigaDocument(AgigaPrefs prefs) {

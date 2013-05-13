@@ -31,20 +31,20 @@ public class AgigaToken implements Serializable {
 		if(other instanceof AgigaToken) {
 			AgigaToken o = (AgigaToken) other;
 			return tokIdx == o.tokIdx
-				&& com.google.common.base.Objects.equal(word, o.word)
-				&& com.google.common.base.Objects.equal(lemma, o.lemma)
+				&& Util.safeEquals(word, o.word)
+				&& Util.safeEquals(lemma, o.lemma)
 				&& charOffBegin == o.charOffBegin
 				&& charOffEnd == o.charOffEnd
-				&& com.google.common.base.Objects.equal(posTag, o.posTag)
-				&& com.google.common.base.Objects.equal(nerTag, o.nerTag)
-				&& com.google.common.base.Objects.equal(normNer, o.normNer);
+				&& Util.safeEquals(posTag, o.posTag)
+				&& Util.safeEquals(nerTag, o.nerTag)
+				&& Util.safeEquals(normNer, o.normNer);
 		}
 		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		return com.google.common.base.Objects.hashCode(
+		return Util.safeHashCode(
 			tokIdx, word, lemma, charOffBegin, charOffEnd, posTag, nerTag, normNer);
 	}
 

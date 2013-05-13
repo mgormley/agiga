@@ -48,20 +48,20 @@ public class BasicAgigaSentence implements Serializable {
 		if(other == null) return false;
 		if(other instanceof BasicAgigaSentence) {
 			BasicAgigaSentence o = (BasicAgigaSentence) other;
-			return com.google.common.base.Objects.equal(prefs, o.prefs)
+			return Util.safeEquals(prefs, o.prefs)
 				&& sentIdx == o.sentIdx
-				&& com.google.common.base.Objects.equal(tokens, o.tokens)
-				&& com.google.common.base.Objects.equal(parseText, o.parseText)
-				&& com.google.common.base.Objects.equal(basicDeps, o.basicDeps)
-				&& com.google.common.base.Objects.equal(colDeps, o.colDeps)
-				&& com.google.common.base.Objects.equal(colCcprocDeps, o.colCcprocDeps);
+				&& Util.safeEquals(tokens, o.tokens)
+				&& Util.safeEquals(parseText, o.parseText)
+				&& Util.safeEquals(basicDeps, o.basicDeps)
+				&& Util.safeEquals(colDeps, o.colDeps)
+				&& Util.safeEquals(colCcprocDeps, o.colCcprocDeps);
 		}
 		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		return com.google.common.base.Objects.hashCode(prefs,
+		return Util.safeHashCode(prefs,
 			sentIdx, tokens, parseText, basicDeps, colDeps, colCcprocDeps);
 	}
 

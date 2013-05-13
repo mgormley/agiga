@@ -41,7 +41,7 @@ public class AgigaMention implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return com.google.common.base.Objects.hashCode(isRepresentative,
+		return Util.safeHashCode(isRepresentative,
 			sentenceIdx, startTokenIdx, endTokenIdx, headTokenIdx, mucId, mucRef);
 	}
 

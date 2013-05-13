@@ -23,14 +23,14 @@ public class AgigaCoref implements Serializable {
 		if(other == null) return false;
 		if(other instanceof AgigaCoref) {
 			AgigaCoref o = (AgigaCoref) other;
-			return com.google.common.base.Objects.equal(mentions, o.mentions);
+			return Util.safeEquals(mentions, o.mentions);
 		}
 		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		return com.google.common.base.Objects.hashCode(mentions);
+		return Util.safeHashCode(mentions);
 	}
     
     public AgigaCoref() {

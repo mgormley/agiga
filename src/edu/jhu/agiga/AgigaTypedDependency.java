@@ -24,7 +24,7 @@ public class AgigaTypedDependency implements Serializable {
 		if(other == null) return false;
 		if(other instanceof AgigaTypedDependency) {
 			AgigaTypedDependency o = (AgigaTypedDependency) other;
-			return com.google.common.base.Objects.equal(type, o.type)
+			return Util.safeEquals(type, o.type)
 				&& gov == o.gov
 				&& dep == o.dep;
 		}
@@ -33,7 +33,7 @@ public class AgigaTypedDependency implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return com.google.common.base.Objects.hashCode(type, gov, dep);
+		return Util.safeHashCode(type, gov, dep);
 	}
 	
 
