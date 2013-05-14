@@ -32,6 +32,15 @@ public class AgigaPrefs implements Serializable {
     boolean readColDeps;
     boolean readColCcprocDeps;
 	boolean readCoref;
+	
+    /**
+     * For testing only: Whether or not to enforce that the XML strictly match
+     * the APIs expectations. If set to true, the Nov 15, 2012 release of
+     * Annotated Gigaword will throw Exceptions on various points where the XML
+     * is malformed or missing annotations. If set to false, this API should
+     * parse all files without error.
+     */
+	boolean strict = false;
 
     public AgigaPrefs() {
         setAll(true);
@@ -115,6 +124,16 @@ public class AgigaPrefs implements Serializable {
         this.readCoref = readCoref;
     }
 
+    /**
+     * For testing only: Whether or not to enforce that the XML strictly match
+     * the APIs expectations. If set to true, the Nov 15, 2012 release of
+     * Annotated Gigaword will throw Exceptions on various points where the XML
+     * is malformed or missing annotations. If set to false, this API should
+     * parse all files without error.
+     */
+    public void setStrict(boolean strict) {
+        this.strict = strict;
+    }
 
     @Override
     public boolean equals(Object other) {
