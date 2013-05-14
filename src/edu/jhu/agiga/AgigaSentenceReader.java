@@ -8,12 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.ximpleware.AutoPilot;
 import com.ximpleware.NavException;
@@ -43,7 +39,7 @@ class AgigaSentenceReader implements Iterable<AgigaSentence>, Iterator<AgigaSent
 
     private static final String NULL_NER_TAG = "0";
 
-    private static Logger log = Logger.getLogger(AgigaSentenceReader.class);
+    private static Logger log = Logger.getLogger(AgigaSentenceReader.class.getName());
 
     private int numSentences;
 
@@ -59,10 +55,10 @@ class AgigaSentenceReader implements Iterable<AgigaSentence>, Iterator<AgigaSent
             this.prefs = prefs;
 
             // Read the file into a byte array
-            log.debug("Reading file into byte array");
+            log.fine("Reading file into byte array");
             File f = new File(inputFile);
             InputStream fis = new FileInputStream(f);
-            log.debug("File size: " + f.length());
+            log.fine("File size: " + f.length());
             byte[] b = new byte[(int)f.length()];
             fis.read(b);
             fis.close();
@@ -87,7 +83,7 @@ class AgigaSentenceReader implements Iterable<AgigaSentence>, Iterator<AgigaSent
     private void init(byte[] b) {
         try {            
             // Index the xml with VTD-XML
-            log.debug("Building VTD index");
+            log.fine("Building VTD index");
             VTDGen vg = new VTDGen();
             vg.setDoc(b);
             vg.parse(false);
@@ -130,7 +126,7 @@ class AgigaSentenceReader implements Iterable<AgigaSentence>, Iterator<AgigaSent
     public AgigaSentence next() {
         try {
             int sentId = vn.parseInt(vn.getAttrVal(AgigaConstants.TOKEN_ID));
-            log.trace("sentence id=" + sentId);
+            log.finer("sentence id=" + sentId);
     
             StanfordAgigaSentence agigaSent = getSentenceInstance(prefs);
             // Subtract one, since the sentences are one-indexed in the XML but
@@ -335,7 +331,7 @@ class AgigaSentenceReader implements Iterable<AgigaSentence>, Iterator<AgigaSent
             require (vn.toElement(VTDNav.NS, AgigaConstants.DEPENDENT));
             int dependentId = vn.parseInt(vn.getText());
 
-            log.trace(String.format("\tdep type=%s\t%d-->%d", type, governorId, dependentId));
+            log.finer(String.format("\tdep type=%s\t%d-->%d", type, governorId, dependentId));
 
             // Subtract one, since the tokens are one-indexed in the XML but
             // zero-indexed in this API
@@ -358,15 +354,13 @@ class AgigaSentenceReader implements Iterable<AgigaSentence>, Iterator<AgigaSent
     }
     
     public static void main(String args[]) throws Exception {
-        ConsoleAppender cAppender = new ConsoleAppender(new PatternLayout("%d{HH:mm:ss,SSS} [%t] %p %c %x - %m%n"));
-        BasicConfigurator.configure(cAppender);
-        // Must be Level.TRACE for debug logging
-        Logger.getRootLogger().setLevel(Level.DEBUG);
+        // Must be Level.FINER for debug logging
+        Util.initializeLogging(Level.FINE);
 
         // Parse each file provided on the command line.
         for (int i = 0; i < args.length; i++) {
             AgigaSentenceReader reader = new AgigaSentenceReader(args[i], new AgigaPrefs());
-            log.debug("Parsing XML");
+            log.fine("Parsing XML");
             for (AgigaSentence agigaSent : reader) { 
                 // Do nothing
             }

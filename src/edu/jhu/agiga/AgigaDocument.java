@@ -3,16 +3,15 @@ package edu.jhu.agiga;
 import static edu.jhu.agiga.AgigaSentenceReader.require;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.io.Serializable;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 /**
  * AgigaDocument provides access to the AgigaSentence and AgigaCoref objects,
@@ -27,7 +26,7 @@ public class AgigaDocument implements Serializable {
 
 	public static final long serialVersionUID = 1;
 
-    private static Logger log = Logger.getLogger(AgigaDocument.class);
+    private static Logger log = Logger.getLogger(AgigaDocument.class.getName());
 
     private String docId;
     private String type;
@@ -93,14 +92,14 @@ public class AgigaDocument implements Serializable {
         AgigaMention[] mentionArray = getAllMentions().toArray(new AgigaMention[0]);
         Arrays.sort(mentionArray, new StartMentionComparator());
         LinkedList<AgigaMention> mentionStarts = new LinkedList<AgigaMention>(Arrays.asList(mentionArray));
-        log.trace("Total number of mentions: " + mentionStarts.size());
+        log.finer("Total number of mentions: " + mentionStarts.size());
         PriorityQueue<AgigaMention> mentionEnds = new PriorityQueue<AgigaMention>(11, new EndMentionComparator());
         
-        log.trace("Number of sentences: " + sents.size());
+        log.finer("Number of sentences: " + sents.size());
         for (int s=0; s<sents.size(); s++) {
             AgigaSentence sent = sents.get(s);
             List<AgigaToken> tokens = sent.getTokens();
-            log.trace("Number of tokens: " + tokens.size());
+            log.finer("Number of tokens: " + tokens.size());
             for (int i=0; i<tokens.size()+1; i++) {
                 while (mentionEnds.size() > 0 && mentionEnds.peek().getSentenceIdx() == s && mentionEnds.peek().getEndTokenIdx() == i) {
                     mentionEnds.remove();
@@ -112,7 +111,7 @@ public class AgigaDocument implements Serializable {
                 if (mentionEnds.size() > 0 && (mentionEnds.peek().getSentenceIdx() < s 
                         || (mentionEnds.peek().getSentenceIdx() == s && mentionEnds.peek().getEndTokenIdx() < i))) {
                     writer.flush();
-                    log.error(mentionEnds);
+                    log.severe("mentionEnds: " + mentionEnds);
                     throw new RuntimeException(String.format("Overlapping coref elements. s=%d i=%d", s, i));
                 }
                 while (mentionStarts.size() > 0 && mentionStarts.peek().getSentenceIdx() == s && mentionStarts.peek().getStartTokenIdx() == i) {

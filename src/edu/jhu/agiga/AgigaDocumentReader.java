@@ -9,12 +9,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.ximpleware.AutoPilot;
 import com.ximpleware.NavException;
@@ -39,7 +35,7 @@ import com.ximpleware.VTDNav;
  */
 class AgigaDocumentReader implements Iterable<AgigaDocument>, Iterator<AgigaDocument> {
 
-    private static Logger log = Logger.getLogger(AgigaDocumentReader.class);
+    private static Logger log = Logger.getLogger(AgigaDocumentReader.class.getName());
 
     private boolean hasNext;
     private int numDocs;
@@ -53,10 +49,10 @@ class AgigaDocumentReader implements Iterable<AgigaDocument>, Iterator<AgigaDocu
         try {
             this.prefs = prefs;
             // Read the file into a byte array
-            log.debug("Reading file into byte array");
+            log.fine("Reading file into byte array");
             File f = new File(inputFile);
             InputStream fis = new FileInputStream(f);
-            log.debug("File size: " + f.length());
+            log.fine("File size: " + f.length());
             byte[] b = new byte[(int)f.length()];
             fis.read(b);
             fis.close();
@@ -75,7 +71,7 @@ class AgigaDocumentReader implements Iterable<AgigaDocument>, Iterator<AgigaDocu
     private void init(byte[] b) {
         try {            
             // Index the xml with VTD-XML
-            log.debug("Building VTD index");
+            log.fine("Building VTD index");
             VTDGen vg = new VTDGen();
             vg.setDoc(b);
             vg.parse(false);
@@ -118,15 +114,15 @@ class AgigaDocumentReader implements Iterable<AgigaDocument>, Iterator<AgigaDocu
         try {
             String docId = vn.toString(vn.getAttrVal(AgigaConstants.DOC_ID));
             String docType = vn.toString(vn.getAttrVal(AgigaConstants.DOC_TYPE));
-            log.trace("doc id=" + docId);
-            log.trace("doc type=" + docType);
+            log.finer("doc id=" + docId);
+            log.finer("doc type=" + docType);
     
             AgigaDocument agigaDoc = new AgigaDocument(prefs);
             agigaDoc.setDocId(docId);
             agigaDoc.setType(docType);
             
             // Read the sentences
-            log.trace("Reading sents");
+            log.finer("Reading sents");
             if (vn.toElement(VTDNav.FIRST_CHILD, AgigaConstants.SENTENCES)) {
                 AgigaSentenceReader sentReader = new AgigaSentenceReader(vn.cloneNav(), prefs);
                 for (AgigaSentence agigaSent : sentReader) {
@@ -137,7 +133,7 @@ class AgigaDocumentReader implements Iterable<AgigaDocument>, Iterator<AgigaDocu
             
             // Read the coreference resolution annotations
             if (prefs.readCoref) {
-                log.trace("Reading corefs");
+                log.finer("Reading corefs");
                 List<AgigaCoref> agigaCorefs = parseCorefs(vn.cloneNav());
                 agigaDoc.setCorefs(agigaCorefs);
             }
@@ -171,7 +167,7 @@ class AgigaDocumentReader implements Iterable<AgigaDocument>, Iterator<AgigaDocu
         List<AgigaCoref> agigaCorefs = new ArrayList<AgigaCoref>();
         if (!vn.toElement(VTDNav.FIRST_CHILD, AgigaConstants.COREFERENCES)) {
             // If there is no coref annotation return the empty list
-            log.trace("No corefs found");
+            log.finer("No corefs found");
             return agigaCorefs;
         }
 
@@ -219,15 +215,13 @@ class AgigaDocumentReader implements Iterable<AgigaDocument>, Iterator<AgigaDocu
     }
     
     public static void main(String args[]) throws Exception {
-        ConsoleAppender cAppender = new ConsoleAppender(new PatternLayout("%d{HH:mm:ss,SSS} [%t] %p %c %x - %m%n"));
-        BasicConfigurator.configure(cAppender);
-        // Must be Level.TRACE for debug logging
-        Logger.getRootLogger().setLevel(Level.DEBUG);
+        // Must be Level.FINER for debug logging
+        Util.initializeLogging(Level.FINE);
 
         // Parse each file provided on the command line.
         for (int i = 0; i < args.length; i++) {
             AgigaDocumentReader reader = new AgigaDocumentReader(args[i], new AgigaPrefs());
-            log.debug("Parsing XML");
+            log.fine("Parsing XML");
             for (AgigaDocument agigaDoc : reader) { 
                 // Do nothing
             }

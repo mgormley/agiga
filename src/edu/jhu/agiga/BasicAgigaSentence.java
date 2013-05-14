@@ -3,12 +3,11 @@ package edu.jhu.agiga;
 import static edu.jhu.agiga.AgigaSentenceReader.require;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.io.Serializable;
+import java.io.Writer;
 import java.util.Arrays;
 import java.util.List;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import edu.jhu.agiga.AgigaConstants.DependencyForm;
 
@@ -20,7 +19,7 @@ import edu.jhu.agiga.AgigaConstants.DependencyForm;
  */
 public class BasicAgigaSentence implements Serializable {
 
-    private static Logger log = Logger.getLogger(BasicAgigaSentence.class);
+    private static Logger log = Logger.getLogger(BasicAgigaSentence.class.getName());
 
 	public static final long serialVersionUID = 1;
 
@@ -164,7 +163,7 @@ public class BasicAgigaSentence implements Serializable {
                     if (tok.getNerTag() != null) {
                         writer.write(tok.getNerTag());
                     } else {
-                        log.warn("Missing NER annotation written as '__MISSING_NER_ANNOTATION__'");
+                        log.warning("Missing NER annotation written as '__MISSING_NER_ANNOTATION__'");
                         writer.write("__MISSING_NER_ANNOTATION__");
                     }
                 }

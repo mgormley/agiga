@@ -1,12 +1,8 @@
 package edu.jhu.agiga;
 
 import java.util.Iterator;
-
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * StreamingSentenceReader is an iterator over AgigaSentence objects. This
@@ -18,7 +14,7 @@ import org.apache.log4j.PatternLayout;
  */
 public class StreamingSentenceReader extends StreamingVtdXmlReader<AgigaSentence> {
     
-    private static Logger log = Logger.getLogger(StreamingSentenceReader.class);
+    private static Logger log = Logger.getLogger(StreamingSentenceReader.class.getName());
     private AgigaPrefs prefs;
 
     public StreamingSentenceReader(String inputFile, AgigaPrefs prefs) {
@@ -32,10 +28,8 @@ public class StreamingSentenceReader extends StreamingVtdXmlReader<AgigaSentence
     }
 
     public static void main(String args[]) throws Exception {
-        ConsoleAppender cAppender = new ConsoleAppender(new PatternLayout("%d{HH:mm:ss,SSS} [%t] %p %c %x - %m%n"));
-        BasicConfigurator.configure(cAppender);
-        // Must be Level.TRACE for debug logging
-        Logger.getRootLogger().setLevel(Level.DEBUG);
+        // Must be Level.FINER for debug logging
+        Util.initializeLogging(Level.FINE);
 
         // Parse each file provided on the command line.
         for (int i = 0; i < args.length; i++) {

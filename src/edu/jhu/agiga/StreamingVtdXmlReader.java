@@ -8,9 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Iterator;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
-
-import org.apache.log4j.Logger;
 
 import com.ximpleware.VTDException;
 import com.ximpleware.VTDGen;
@@ -31,7 +30,7 @@ import com.ximpleware.VTDNav;
  */
 public abstract class StreamingVtdXmlReader<T> implements Iterable<T>, Iterator<T> {
 
-    private static Logger log = Logger.getLogger(StreamingVtdXmlReader.class);
+    private static Logger log = Logger.getLogger(StreamingVtdXmlReader.class.getName());
 
     private String fileId;
     private int numSents;

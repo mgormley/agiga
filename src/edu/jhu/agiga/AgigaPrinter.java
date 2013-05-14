@@ -3,13 +3,7 @@ package edu.jhu.agiga;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
-
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.PropertyConfigurator;
+import java.util.logging.Logger;
 
 import edu.jhu.agiga.AgigaConstants.DependencyForm;
 
@@ -22,21 +16,23 @@ import edu.jhu.agiga.AgigaConstants.DependencyForm;
  */
 public class AgigaPrinter {
 
-    private static Logger log = Logger.getLogger(AgigaPrinter.class);
+    private static Logger log = Logger.getLogger(AgigaPrinter.class.getName());
 
     public static void main(String args[]) throws Exception {
+        Util.initializeLogging();
+        //LogManager.getLogManager().
         // Initialize Log4j
-        String log4jProperty = System.getProperty("log4j.configuration");
-        if (log4jProperty == null) {
-            ConsoleAppender cAppender = new ConsoleAppender(new PatternLayout("%d{HH:mm:ss,SSS} [%t] %p %c %x - %m%n"),
-                    "System.err");
-            BasicConfigurator.configure(cAppender);
-            // Must be Level.TRACE for debug logging
-            Logger.getRootLogger().setLevel(Level.INFO);
-        } else {
-            // Ensure that we pick up the log4j.properties file if present
-            PropertyConfigurator.configure(log4jProperty);
-        }
+//        String log4jProperty = System.getProperty("log4j.configuration");
+//        if (log4jProperty == null) {
+//            ConsoleAppender cAppender = new ConsoleAppender(new PatternLayout("%d{HH:mm:ss,SSS} [%t] %p %c %x - %m%n"),
+//                    "System.err");
+//            BasicConfigurator.configure(cAppender);
+//            // Must be Level.TRACE for debug logging
+//            Logger.setLevel(Level.INFO);
+//        } else {
+//            // Ensure that we pick up the log4j.properties file if present
+//            PropertyConfigurator.configure(log4jProperty);
+//        }
 
         // Create usage string
         String usage = "\nusage: java " + AgigaPrinter.class.getName() + " <type> <gzipped input file>"
@@ -60,9 +56,10 @@ public class AgigaPrinter {
         usage += "\n  and where <gzipped input file> is an .xml.gz file";
         usage += "\n  from Annotated Gigaword";
 
+        log.info("Testing");
         // Check for correct args
         if (args.length != 2) {
-            log.error(usage);
+            log.severe(usage);
             System.exit(1);
         }
         String type = args[0];
@@ -95,8 +92,8 @@ public class AgigaPrinter {
         } else if (type.equals("for-testing-only")) {
             printForTestingOnly(inputFile, writer);
         } else {
-            log.error("Printer type not recognized: " + type);
-            log.error(usage);
+            log.severe("Printer type not recognized: " + type);
+            log.severe(usage);
             System.exit(1);
         }
         writer.flush();
