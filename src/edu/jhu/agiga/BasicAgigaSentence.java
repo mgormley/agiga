@@ -43,28 +43,6 @@ public class BasicAgigaSentence implements Serializable {
     private List<AgigaTypedDependency> colDeps;
     private List<AgigaTypedDependency> colCcprocDeps;
 
-	@Override
-	public boolean equals(Object other) {
-		if(other == null) return false;
-		if(other instanceof BasicAgigaSentence) {
-			BasicAgigaSentence o = (BasicAgigaSentence) other;
-			return Util.safeEquals(prefs, o.prefs)
-				&& sentIdx == o.sentIdx
-				&& Util.safeEquals(tokens, o.tokens)
-				&& Util.safeEquals(parseText, o.parseText)
-				&& Util.safeEquals(basicDeps, o.basicDeps)
-				&& Util.safeEquals(colDeps, o.colDeps)
-				&& Util.safeEquals(colCcprocDeps, o.colCcprocDeps);
-		}
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		return Util.safeHashCode(prefs,
-			sentIdx, tokens, parseText, basicDeps, colDeps, colCcprocDeps);
-	}
-
     public BasicAgigaSentence(AgigaPrefs prefs) {
         this.prefs = prefs;
     }
@@ -324,5 +302,27 @@ public class BasicAgigaSentence implements Serializable {
     public void setColCcprocDeps(List<AgigaTypedDependency> colCcprocDeps) {
         this.colCcprocDeps = colCcprocDeps;
     }
-    
+
+    @Override
+    public boolean equals(Object other) {
+        if(other == null) return false;
+        if(other instanceof BasicAgigaSentence) {
+            BasicAgigaSentence o = (BasicAgigaSentence) other;
+            return Util.safeEquals(prefs, o.prefs)
+                && sentIdx == o.sentIdx
+                && Util.safeEquals(tokens, o.tokens)
+                && Util.safeEquals(parseText, o.parseText)
+                && Util.safeEquals(basicDeps, o.basicDeps)
+                && Util.safeEquals(colDeps, o.colDeps)
+                && Util.safeEquals(colCcprocDeps, o.colCcprocDeps);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Util.safeHashCode(prefs,
+            sentIdx, tokens, parseText, basicDeps, colDeps, colCcprocDeps);
+    }
+
 }

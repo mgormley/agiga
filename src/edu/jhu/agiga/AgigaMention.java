@@ -39,28 +39,6 @@ public class AgigaMention implements Serializable {
         this.mucRef = UNASSIGNED;
     }
 
-	@Override
-	public int hashCode() {
-		return Util.safeHashCode(isRepresentative,
-			sentenceIdx, startTokenIdx, endTokenIdx, headTokenIdx, mucId, mucRef);
-	}
-
-	@Override
-	public boolean equals(Object other) {
-		if(other == null) return false;
-		if(other instanceof AgigaMention) {
-			AgigaMention o = (AgigaMention) other;
-			return isRepresentative == o.isRepresentative
-				&& sentenceIdx == o.sentenceIdx
-				&& startTokenIdx == o.startTokenIdx
-				&& endTokenIdx == o.endTokenIdx
-				&& headTokenIdx == o.headTokenIdx
-				&& mucId == o.mucId
-				&& mucRef == o.mucRef;
-		}
-		return false;
-	}
-
     public boolean isRepresentative() {
         return isRepresentative;
     }
@@ -102,6 +80,28 @@ public class AgigaMention implements Serializable {
         return "AgigaMention [endTokenId=" + endTokenIdx + ", headTokenId=" + headTokenIdx + ", id=" + mucId
                 + ", isRepresentative=" + isRepresentative + ", ref=" + mucRef + ", sentenceId=" + sentenceIdx
                 + ", startTokenId=" + startTokenIdx + "]";
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if(other == null) return false;
+        if(other instanceof AgigaMention) {
+            AgigaMention o = (AgigaMention) other;
+            return isRepresentative == o.isRepresentative
+                && sentenceIdx == o.sentenceIdx
+                && startTokenIdx == o.startTokenIdx
+                && endTokenIdx == o.endTokenIdx
+                && headTokenIdx == o.headTokenIdx
+                && mucId == o.mucId
+                && mucRef == o.mucRef;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Util.safeHashCode(isRepresentative,
+            sentenceIdx, startTokenIdx, endTokenIdx, headTokenIdx, mucId, mucRef);
     }
 
 }

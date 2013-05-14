@@ -17,25 +17,7 @@ public class AgigaTypedDependency implements Serializable {
 
     private String type;
     private int gov;
-    private int dep;
-
-	@Override
-	public boolean equals(Object other) {
-		if(other == null) return false;
-		if(other instanceof AgigaTypedDependency) {
-			AgigaTypedDependency o = (AgigaTypedDependency) other;
-			return Util.safeEquals(type, o.type)
-				&& gov == o.gov
-				&& dep == o.dep;
-		}
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		return Util.safeHashCode(type, gov, dep);
-	}
-	
+    private int dep;	
 
     public AgigaTypedDependency(String type, int gov, int dep) {
         this.type = type;
@@ -53,6 +35,23 @@ public class AgigaTypedDependency implements Serializable {
 
     public int getDepIdx() {
         return dep;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if(other == null) return false;
+        if(other instanceof AgigaTypedDependency) {
+            AgigaTypedDependency o = (AgigaTypedDependency) other;
+            return Util.safeEquals(type, o.type)
+                && gov == o.gov
+                && dep == o.dep;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Util.safeHashCode(type, gov, dep);
     }
 
 }

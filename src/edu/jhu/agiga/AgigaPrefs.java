@@ -33,33 +33,6 @@ public class AgigaPrefs implements Serializable {
     boolean readColCcprocDeps;
 	boolean readCoref;
 
-	@Override
-	public boolean equals(Object other) {
-		if(other == null) return false;
-		if(other instanceof AgigaPrefs) {
-			AgigaPrefs o = (AgigaPrefs) other;
-			return readWord == o.readWord
-				&& readLemma == o.readLemma
-				&& readOffsets == o.readOffsets
-				&& readPos == o.readPos
-				&& readNer == o.readNer
-				&& readNormNer == o.readNormNer
-				&& readParse == o.readParse
-				&& readBasicDeps == o.readBasicDeps
-				&& readColDeps == o.readColDeps
-				&& readColCcprocDeps == o.readColCcprocDeps
-				&& readCoref == o.readCoref;
-		}
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		return Util.safeHashCode(readWord,
-			readLemma, readOffsets, readPos, readNer, readNormNer,
-			readParse, readBasicDeps, readColDeps, readColCcprocDeps, readCoref);
-	}
-
     public AgigaPrefs() {
         setAll(true);
     }
@@ -142,4 +115,32 @@ public class AgigaPrefs implements Serializable {
         this.readCoref = readCoref;
     }
 
+
+    @Override
+    public boolean equals(Object other) {
+        if(other == null) return false;
+        if(other instanceof AgigaPrefs) {
+            AgigaPrefs o = (AgigaPrefs) other;
+            return readWord == o.readWord
+                && readLemma == o.readLemma
+                && readOffsets == o.readOffsets
+                && readPos == o.readPos
+                && readNer == o.readNer
+                && readNormNer == o.readNormNer
+                && readParse == o.readParse
+                && readBasicDeps == o.readBasicDeps
+                && readColDeps == o.readColDeps
+                && readColCcprocDeps == o.readColCcprocDeps
+                && readCoref == o.readCoref;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Util.safeHashCode(readWord,
+            readLemma, readOffsets, readPos, readNer, readNormNer,
+            readParse, readBasicDeps, readColDeps, readColCcprocDeps, readCoref);
+    }
+    
 }

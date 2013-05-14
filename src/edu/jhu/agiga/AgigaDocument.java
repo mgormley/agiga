@@ -35,25 +35,6 @@ public class AgigaDocument implements Serializable {
     private List<AgigaCoref> corefs;
     private AgigaPrefs prefs;
 
-	@Override
-	public boolean equals(Object other) {
-		if(other == null) return false;
-		if(other instanceof AgigaDocument) {
-			AgigaDocument o = (AgigaDocument) other;
-			return Util.safeEquals(docId, o.docId)
-				&& Util.safeEquals(type, o.type)
-				&& Util.safeEquals(sents, o.sents)
-				&& Util.safeEquals(corefs, o.corefs);
-				//&& Util.safeEquals(prefs, o.prefs);
-		}
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		return Util.safeHashCode(docId, type, sents, corefs, prefs);
-	}
-
     public AgigaDocument(AgigaPrefs prefs) {
         this.prefs = prefs;
         sents = new ArrayList<AgigaSentence>();
@@ -153,6 +134,25 @@ public class AgigaDocument implements Serializable {
             writer.write("\n");
         }
         writer.write("\n");
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if(other == null) return false;
+        if(other instanceof AgigaDocument) {
+            AgigaDocument o = (AgigaDocument) other;
+            return Util.safeEquals(docId, o.docId)
+                && Util.safeEquals(type, o.type)
+                && Util.safeEquals(sents, o.sents)
+                && Util.safeEquals(corefs, o.corefs);
+                //&& Util.safeEquals(prefs, o.prefs);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Util.safeHashCode(docId, type, sents, corefs, prefs);
     }
 
     private static class StartMentionComparator implements Comparator<AgigaMention> {

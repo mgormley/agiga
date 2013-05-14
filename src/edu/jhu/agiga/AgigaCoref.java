@@ -17,21 +17,6 @@ public class AgigaCoref implements Serializable {
 	public static final long serialVersionUID = 1;
 
     private List<AgigaMention> mentions;
-
-	@Override
-	public boolean equals(Object other) {
-		if(other == null) return false;
-		if(other instanceof AgigaCoref) {
-			AgigaCoref o = (AgigaCoref) other;
-			return Util.safeEquals(mentions, o.mentions);
-		}
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		return Util.safeHashCode(mentions);
-	}
     
     public AgigaCoref() {
         this.mentions = new ArrayList<AgigaMention>();
@@ -44,5 +29,20 @@ public class AgigaCoref implements Serializable {
     public void add(AgigaMention mention) {
         mentions.add(mention);
     }
-        
+
+    @Override
+    public boolean equals(Object other) {
+        if(other == null) return false;
+        if(other instanceof AgigaCoref) {
+            AgigaCoref o = (AgigaCoref) other;
+            return Util.safeEquals(mentions, o.mentions);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Util.safeHashCode(mentions);
+    }
+    
 }

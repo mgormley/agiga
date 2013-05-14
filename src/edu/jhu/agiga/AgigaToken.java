@@ -25,29 +25,6 @@ public class AgigaToken implements Serializable {
     private String nerTag;
     private String normNer;
 
-	@Override
-	public boolean equals(Object other) {
-		if(other == null) return false;
-		if(other instanceof AgigaToken) {
-			AgigaToken o = (AgigaToken) other;
-			return tokIdx == o.tokIdx
-				&& Util.safeEquals(word, o.word)
-				&& Util.safeEquals(lemma, o.lemma)
-				&& charOffBegin == o.charOffBegin
-				&& charOffEnd == o.charOffEnd
-				&& Util.safeEquals(posTag, o.posTag)
-				&& Util.safeEquals(nerTag, o.nerTag)
-				&& Util.safeEquals(normNer, o.normNer);
-		}
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		return Util.safeHashCode(
-			tokIdx, word, lemma, charOffBegin, charOffEnd, posTag, nerTag, normNer);
-	}
-
     public AgigaToken() {
         // No argument constructor
     }
@@ -127,4 +104,27 @@ public class AgigaToken implements Serializable {
         return tokIdx;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if(other == null) return false;
+        if(other instanceof AgigaToken) {
+            AgigaToken o = (AgigaToken) other;
+            return tokIdx == o.tokIdx
+                && Util.safeEquals(word, o.word)
+                && Util.safeEquals(lemma, o.lemma)
+                && charOffBegin == o.charOffBegin
+                && charOffEnd == o.charOffEnd
+                && Util.safeEquals(posTag, o.posTag)
+                && Util.safeEquals(nerTag, o.nerTag)
+                && Util.safeEquals(normNer, o.normNer);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Util.safeHashCode(
+            tokIdx, word, lemma, charOffBegin, charOffEnd, posTag, nerTag, normNer);
+    }
+    
 }
