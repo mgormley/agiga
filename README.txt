@@ -105,3 +105,20 @@ ant clean compile
 
 # To build jars of classes and sources:
 ant jar
+
+-------------------
+Release Notes     :
+-------------------
+
+** Version 1.1:
+- Added equals/hashcode methods for all data objects.
+- Modified StanfordAgigaSentence to rename the ROOT node.
+- Using the same references for TreeGraphNode and TypedDependency.
+- Adding a "strict" option to AgigaPrefs that ensures correct XML.
+- Switched to java.util.logging.
+- Bug fix: Handling stray whitespace in charBeginOffset and charEndOffset fields.
+- Bug fix: Handling missing NER tags.
+
+** Version 1.0: 
+- Initial Release.
+
