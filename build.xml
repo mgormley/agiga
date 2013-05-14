@@ -5,7 +5,7 @@
   <property name="source.path"         value="${basedir}/src" />
   <property name="build.path"          value="${basedir}/build" />
   <property name="build.path"          value="${basedir}/build" />
-  <property name="version"             value="1.0" />
+  <property name="version"             value="1.1" />
   <property name="app.jar.path"        value="${build.path}/agiga-${version}.jar" />
   <property name="source.jar.path"     value="${build.path}/agiga-sources-${version}.jar" />
 
