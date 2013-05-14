@@ -241,10 +241,22 @@ class AgigaSentenceReader implements Iterable<AgigaSentence>, Iterator<AgigaSent
 
             if (prefs.readOffsets) {
                 require(vn.toElement(VTDNav.NS, AgigaConstants.CHARACTER_OFFSET_BEGIN));
-                int charOffBegin = Integer.parseInt(vn.toString(vn.getText()).trim());
+                int charOffBegin;
+                if (prefs.strict) {
+                    charOffBegin = Integer.parseInt(vn.toString(vn.getText()));
+                } else {
+                    // Remove unexpected whitespace surrounding the integer.
+                    charOffBegin = Integer.parseInt(vn.toString(vn.getText()).trim());
+                }
                 agigaToken.setCharOffBegin(charOffBegin);
                 require(vn.toElement(VTDNav.NS, AgigaConstants.CHARACTER_OFFSET_END));
-                int charOffEnd = Integer.parseInt(vn.toString(vn.getText()).trim());
+                int charOffEnd;
+                if (prefs.strict) {
+                    charOffEnd = Integer.parseInt(vn.toString(vn.getText()));
+                } else {
+                    // Remove unexpected whitespace surrounding the integer.
+                    charOffEnd = Integer.parseInt(vn.toString(vn.getText()).trim());
+                }
                 agigaToken.setCharOffEnd(charOffEnd);
             }
 
@@ -255,9 +267,17 @@ class AgigaSentenceReader implements Iterable<AgigaSentence>, Iterator<AgigaSent
             }
 
             if (prefs.readNer) {
-                require(vn.toElement(VTDNav.NS, AgigaConstants.NER));
-                String nerTag = vn.toString(vn.getText());
-                agigaToken.setNerTag(nerTag);
+                if (prefs.strict) {
+                    require(vn.toElement(VTDNav.NS, AgigaConstants.NER));
+                    String nerTag = vn.toString(vn.getText());
+                    agigaToken.setNerTag(nerTag);
+                } else {
+                    String nerTag = null;
+                    if (vn.toElement(VTDNav.NS, AgigaConstants.NER)) {
+                        nerTag = vn.toString(vn.getText());
+                    }
+                    agigaToken.setNerTag(nerTag);
+                }
             }
             if (prefs.readNormNer) {
                 // NormNER only applies to some tokens
