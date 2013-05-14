@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import edu.jhu.agiga.AgigaConstants.DependencyForm;
 
 /**
@@ -17,6 +19,8 @@ import edu.jhu.agiga.AgigaConstants.DependencyForm;
  *
  */
 public class BasicAgigaSentence implements Serializable {
+
+    private static Logger log = Logger.getLogger(BasicAgigaSentence.class);
 
 	public static final long serialVersionUID = 1;
 
@@ -154,7 +158,16 @@ public class BasicAgigaSentence implements Serializable {
             if (useNerTags) {
                 require(prefs.readNer,
                         "AgigaPrefs.readNer must be true if useNerTags=true for writeTags()");
-                writer.write(tok.getNerTag());
+                if (prefs.strict) { 
+                    writer.write(tok.getNerTag());
+                } else {
+                    if (tok.getNerTag() != null) {
+                        writer.write(tok.getNerTag());
+                    } else {
+                        log.warn("Missing NER annotation written as '__MISSING_NER_ANNOTATION__'");
+                        writer.write("__MISSING_NER_ANNOTATION__");
+                    }
+                }
             } else {
                 require(prefs.readPos,
                         "AgigaPrefs.readPos must be true if useNerTags=false for writeTags()");
