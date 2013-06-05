@@ -21,6 +21,7 @@ import edu.jhu.agiga.AgigaConstants.DependencyForm;
 public class BasicAgigaSentence implements Serializable {
 
     private static Logger log = Logger.getLogger(BasicAgigaSentence.class.getName());
+	static final Pattern multiWordTerminalPat = Pattern.compile("\\([A-Z]+\\s[^\\(]+\\s[^\\(]+?\\)");
 
 	public static final long serialVersionUID = 1;
 
@@ -35,6 +36,10 @@ public class BasicAgigaSentence implements Serializable {
     // This only contains the text form of the constituency parse. For an
     // object representation, use StanfordAgigaSetence.getStanfordContituencyParse().
     private String parseText;
+
+	// Same as parseText but with spaces in terminals replaced by non-breaking
+	// spaces so that Stanford's tree methods don't split those terminals further.
+	private String parseTextFixedCache;
     
     // Working with the Stanford structures is awkward and slow because the
     // TreeGraphNode converts the WordLemmaTag to a CyclicCoreLabel which
@@ -277,14 +282,16 @@ public class BasicAgigaSentence implements Serializable {
      */
     public String getParseText() {
 
+		if(parseTextFixedCache != null)
+			return parseTextFixedCache;
+
 		// check for leaves that have a space in them
 		// replace any spaces with non-breaking spaces 0xa0
 		final String nbsp = "\u00A0";
 
 		// want to find terminals with more than one token
 		// leaves are not recursive, so its ok to use a regular expression
-		final Pattern p = Pattern.compile("\\([A-Z]+\\s[^\\(]+\\s[^\\(]+?\\)");
-		Matcher m = p.matcher(parseText);
+		Matcher m = multiWordTerminalPat.matcher(parseText);
 		int ptr = 0;
 		StringBuilder sb = null;
 		while(m.find()) {
@@ -303,11 +310,13 @@ public class BasicAgigaSentence implements Serializable {
 
 			ptr = e;
 		}
-		if(sb == null) return parseText;
-		else {
+		if(sb == null) {
+			parseTextFixedCache = parseText;
+		} else {
 			sb.append(parseText.substring(ptr));
-			return sb.toString();
+			parseTextFixedCache = sb.toString();
 		}
+		return parseTextFixedCache;
     }
 
     public void setParseText(String parseText) {
