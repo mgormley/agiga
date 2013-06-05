@@ -8,6 +8,7 @@ import java.io.Writer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.regex.*;
 
 import edu.jhu.agiga.AgigaConstants.DependencyForm;
 
@@ -275,7 +276,38 @@ public class BasicAgigaSentence implements Serializable {
      * @see edu.jhu.hltcoe.sp.data.depparse.AgigaSentence#getParseText()
      */
     public String getParseText() {
-        return parseText;
+
+		// check for leaves that have a space in them
+		// replace any spaces with non-breaking spaces 0xa0
+		final String nbsp = "\u00A0";
+
+		// want to find terminals with more than one token
+		// leaves are not recursive, so its ok to use a regular expression
+		final Pattern p = Pattern.compile("\\([A-Z]+\\s[^\\(]+\\s[^\\(]+?\\)");
+		Matcher m = p.matcher(parseText);
+		int ptr = 0;
+		StringBuilder sb = null;
+		while(m.find()) {
+			if(sb == null) sb = new StringBuilder();
+			int s = m.start();
+			int e = m.end();
+			
+			// before match
+			sb.append(parseText.substring(ptr, s));
+			
+			// match itself
+			String mid = parseText.substring(s, e);
+			int mid_space = mid.indexOf(" ");
+			sb.append(mid.substring(0, mid_space+1));
+			sb.append(mid.substring(mid_space+1).replaceAll("\\s+", nbsp));
+
+			ptr = e;
+		}
+		if(sb == null) return parseText;
+		else {
+			sb.append(parseText.substring(ptr));
+			return sb.toString();
+		}
     }
 
     public void setParseText(String parseText) {
