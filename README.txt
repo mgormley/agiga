@@ -1,5 +1,5 @@
-Annotated Gigaword API and Command Line Tools v1.1 - July 21, 2012
-------------------------------------------------------------------
+Annotated Gigaword API and Command Line Tools v1.2
+--------------------------------------------------
 
 This release includes a Java API and command line tools for reading
 the Annotated Gigaword dataset XML files. 
@@ -39,7 +39,9 @@ usage: java edu.jhu.agiga.AgigaPrinter <type> <gzipped input file>
 For example, to print part-of-speech tags for the file
 nyt_eng_199911.xml.gz, we could run:
 
-java -cp build/agiga-1.1.jar:lib/* edu.jhu.agiga.AgigaPrinter pos annotated_gigaword/nyt_eng_199911.xml.gz
+java -cp build/agiga-<version number>.jar:lib/* edu.jhu.agiga.AgigaPrinter pos annotated_gigaword/nyt_eng_199911.xml.gz
+
+where <version number> is replaced with the latest version.
 
 -------------------
 Java API          :
@@ -109,6 +111,10 @@ ant jar
 -------------------
 Release Notes     :
 -------------------
+
+** Version 1.2:
+- The Stanford Tree getLeaves() tokenization has a bug around whitespace. 
+  Special handling for this case was added to AgigaSentence.getParseText().
 
 ** Version 1.1:
 - Added equals/hashcode methods for all data objects.
