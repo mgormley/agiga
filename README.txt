@@ -1,5 +1,5 @@
-Annotated Gigaword API and Command Line Tools v1.2
---------------------------------------------------
+Annotated Gigaword API and Command Line Tools
+---------------------------------------------
 This is a Java API and a suite of command line tools for reading and printing the annotations on Annotated Gigaword.
 
 For a full description see our workshop paper:
