@@ -120,6 +120,9 @@ mvn compile assembly:single
 Release Notes     :
 -------------------
 
+** Version 1.3:
+- Moved to http://github.com/mgormley/agiga and switched to a Maven build.
+
 ** Version 1.2:
 - The Stanford Tree getLeaves() tokenization has a bug around whitespace. 
   Special handling for this case was added to AgigaSentence.getParseText().
