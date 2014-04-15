@@ -1,5 +1,13 @@
 Annotated Gigaword API and Command Line Tools v1.2
 --------------------------------------------------
+This is a Java API and a suite of command line tools for reading and printing the annotations on Annotated Gigaword.
+
+For a full description see our workshop paper:
+
+Annotated Gigaword. 
+Courtney Napoles, Matthew Gormley, Benjamin Van Durme. 
+AKBC-WEKEX workshop at NAACL. 2012. 
+https://akbcwekex2012.files.wordpress.com/2012/05/28_paper.pdf
 
 This release includes a Java API and command line tools for reading
 the Annotated Gigaword dataset XML files. 
@@ -95,18 +103,18 @@ issue by providing API calls for both.
 Building          :
 -------------------
 
-A build.xml is provided for building with Apache Ant.  Example
+A pom.xml is provided for building with Maven.  Example
 commands are below and should be run from the top level directory that
-contains the build.xml.
+contains the pom.xml.
 
 # To compile: 
-ant
+mvn compile
 
 # To clean and compile
-ant clean compile
+mvn clean compile
 
 # To build jars of classes and sources:
-ant jar
+mvn compile assembly:single
 
 -------------------
 Release Notes     :
