@@ -19,6 +19,13 @@ Project Hosting   :
 For the latest version, go to:
 http://code.google.com/p/agiga
 
+The latest version is deployed on Maven Central:
+    <dependency>
+      <groupId>edu.jhu.agiga</groupId>
+      <artifactId>agiga</artifactId>
+      <version>1.4</version>
+    </dependency>
+
 -------------------
 Command Line Tools:
 -------------------
