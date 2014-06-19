@@ -3,7 +3,7 @@
 
   <groupId>edu.jhu.agiga</groupId>
   <artifactId>agiga</artifactId>
-  <version>1.4-SNAPSHOT</version> <!-- 1.2 has been deployed -->
+  <version>1.4</version> <!-- 1.2 has been deployed -->
 
   <name>agiga - The Annotated Gigaword API</name>
 
@@ -39,6 +39,71 @@
 	  </configuration>
 	  <version>3.1</version>
 	</plugin>
+	<!-- fat JAR -->
+	<plugin>
+	  <artifactId>maven-assembly-plugin</artifactId>
+	  <version>2.4</version>
+	  <configuration>
+	    <descriptorRefs>
+	      <descriptorRef>jar-with-dependencies</descriptorRef>
+	    </descriptorRefs>
+	  </configuration>
+	  <executions>
+	    <execution>
+	      <id>make-assembly</id> <!-- this is used for inheritance merges -->
+	      <phase>package</phase> <!-- bind to the packaging phase -->
+	      <goals>
+		<goal>single</goal>
+	      </goals>
+	    </execution>
+	  </executions>
+	</plugin>
+	<!-- Nexus Staging Maven plugin for deploying to Maven Central -->
+	<plugin>
+	  <groupId>org.sonatype.plugins</groupId>
+	  <artifactId>nexus-staging-maven-plugin</artifactId>
+	  <version>1.6.1</version>
+	  <extensions>true</extensions>
+	  <configuration>
+            <serverId>ossrh</serverId>
+            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+	  </configuration>
+	</plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  
+  <dependencies>
+    <dependency>
+      <groupId>edu.stanford.nlp</groupId>
+      <artifactId>stanford-corenlp</artifactId>
+      <version>1.3.5</version>
+    </dependency>
+    <dependency>
+      <groupId>com.ximpleware</groupId>
+      <artifactId>vtd-xml</artifactId>
+      <version>2.11</version>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.16</version>
+    </dependency>
+  </dependencies>
+
+  <scm>
+    <connection>scm:git:git@github.com:mgormley/agiga.git</connection>
+    <url>scm:git:git@github.com:mgormley/agiga.git</url>
+    <developerConnection>scm:git:git@github.com:mgormley/agiga.git</developerConnection>
+  </scm>
+
+<profiles>
+  <profile> 
+    <id>release</id>
+    <build>
+      <plugins>
+      <!-- These plugins will only run at release time -->
 	<plugin>
 	  <groupId>org.apache.maven.plugins</groupId>
 	  <artifactId>maven-source-plugin</artifactId>
@@ -68,54 +133,39 @@
 	      </goals>
 	    </execution>
 	  </executions>
-	  <version>2.9</version>
+	  <version>2.9.1</version>
 	</plugin>
-	<!-- fat JAR -->
+	<!-- GPG signing plugin for deploying to Maven Central -->
 	<plugin>
-	  <artifactId>maven-assembly-plugin</artifactId>
-	  <version>2.4</version>
-	  <configuration>
-	    <descriptorRefs>
-	      <descriptorRef>jar-with-dependencies</descriptorRef>
-	    </descriptorRefs>
-	  </configuration>
+	  <groupId>org.apache.maven.plugins</groupId>
+	  <artifactId>maven-gpg-plugin</artifactId>
+	  <version>1.5</version>
 	  <executions>
-	    <execution>
-	      <id>make-assembly</id> <!-- this is used for inheritance merges -->
-	      <phase>package</phase> <!-- bind to the packaging phase -->
-	      <goals>
-		<goal>single</goal>
-	      </goals>
-	    </execution>
+            <execution>
+              <id>sign-artifacts</id>
+              <phase>verify</phase>
+              <goals>
+		<goal>sign</goal>
+              </goals>
+            </execution>
 	  </executions>
 	</plugin>
       </plugins>
-    </pluginManagement>
-  </build>
-  
-  <dependencies>
-    <dependency>
-      <groupId>edu.stanford.nlp</groupId>
-      <artifactId>stanford-corenlp</artifactId>
-      <version>1.3.5</version>
-    </dependency>
-    <dependency>
-      <groupId>com.ximpleware</groupId>
-      <artifactId>vtd-xml</artifactId>
-      <version>2.11</version>
-    </dependency>
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.16</version>
-    </dependency>
-  </dependencies>
+    </build>
+  </profile>
+</profiles>
 
-  <scm>
-    <connection>scm:git:git@github.com:mgormley/agiga.git</connection>
-    <url>scm:git:git@github.com:mgormley/agiga.git</url>
-    <developerConnection>scm:git:git@github.com:mgormley/agiga.git</developerConnection>
-  </scm>
+  <!-- For deploying to Maven Central -->
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
 
 </project>
 
