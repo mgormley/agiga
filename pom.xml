@@ -3,7 +3,7 @@
 
   <groupId>edu.jhu.agiga</groupId>
   <artifactId>agiga</artifactId>
-  <version>1.4</version> <!-- 1.2 has been deployed -->
+  <version>1.5-SNAPSHOT</version>
 
   <name>${project.groupId}:${project.artifactId}</name>
   <description> The Annotated Gigaword API and command line tools.</description>
