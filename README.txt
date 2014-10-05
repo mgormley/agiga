@@ -17,7 +17,7 @@ Project Hosting   :
 -------------------
 
 For the latest version, go to:
-http://code.google.com/p/agiga
+https://github.com/mgormley/agiga
 
 The latest version is deployed on Maven Central:
     <dependency>
