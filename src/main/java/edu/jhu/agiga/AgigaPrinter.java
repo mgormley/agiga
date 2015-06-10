@@ -264,6 +264,8 @@ public class AgigaPrinter {
         log.info("Parsing XML for file: " + dReader.getFileId());
         for (AgigaDocument doc : dReader) {
             log.info("Parsing doc: id=" + doc.getDocId() + " type=" + doc.getType());
+            if (doc.getHeadline() != null) { log.info("Found headline: " + doc.getHeadline()); }
+            if (doc.getDateline() != null) { log.info("Found dateline: " + doc.getDateline()); }
             for (AgigaSentence sent : doc.getSents()) {
                 printAllSentenceAnnotations(writer, sent);
             }

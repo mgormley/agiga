@@ -54,6 +54,9 @@ public class AgigaConstants {
     public static final String START = "start";
     public static final String END = "end";
     public static final String HEAD = "head";
+    
+    public static final String HEADLINE = "HEADLINE";
+    public static final String DATELINE = "DATELINE";
 
     // XML Attribute names
     public static final String DOC_ID = "id";

@@ -30,6 +30,8 @@ public class AgigaDocument implements Serializable {
 
     private String docId;
     private String type;
+    private String headline;
+    private String dateline;
     private List<AgigaSentence> sents;
     private List<AgigaCoref> corefs;
     private AgigaPrefs prefs;
@@ -81,7 +83,23 @@ public class AgigaDocument implements Serializable {
     public void setType(String type) {
         this.type = type;
     }
-    
+        
+    public String getHeadline() {
+        return headline;
+    }
+
+    public void setHeadline(String headline) {
+        this.headline = headline;
+    }
+
+    public String getDateline() {
+        return dateline;
+    }
+
+    public void setDateline(String dateline) {
+        this.dateline = dateline;
+    }
+
     // TODO: should this move to an external class? it might be tricky to do so
     public void writeMucStyleCoref(Writer writer) throws IOException {
         require(prefs.readWord && prefs.readCoref, 
@@ -141,17 +159,19 @@ public class AgigaDocument implements Serializable {
         if(other instanceof AgigaDocument) {
             AgigaDocument o = (AgigaDocument) other;
             return Util.safeEquals(docId, o.docId)
-                && Util.safeEquals(type, o.type)
-                && Util.safeEquals(sents, o.sents)
-                && Util.safeEquals(corefs, o.corefs);
-                //&& Util.safeEquals(prefs, o.prefs);
+                    && Util.safeEquals(type, o.type)
+                    && Util.safeEquals(headline, o.headline)
+                    && Util.safeEquals(dateline, o.dateline)
+                    && Util.safeEquals(sents, o.sents)
+                    && Util.safeEquals(corefs, o.corefs);
+                    //&& Util.safeEquals(prefs, o.prefs);
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        return Util.safeHashCode(docId, type, sents, corefs, prefs);
+        return Util.safeHashCode(docId, type, headline, dateline, sents, corefs, prefs);
     }
 
     private static class StartMentionComparator implements Comparator<AgigaMention> {

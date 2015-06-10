@@ -32,6 +32,8 @@ public class AgigaPrefs implements Serializable {
     boolean readColDeps;
     boolean readColCcprocDeps;
 	boolean readCoref;
+	boolean readHeadline;
+	boolean readDateline;
 	
     /**
      * For testing only: Whether or not to enforce that the XML strictly match
@@ -58,6 +60,8 @@ public class AgigaPrefs implements Serializable {
         readColDeps = value;
         readColCcprocDeps = value;
         readCoref = value;
+        readHeadline = value;
+        readDateline = value;
     }
 
     public void setForConnlStyleDeps(DependencyForm form) {
@@ -123,6 +127,14 @@ public class AgigaPrefs implements Serializable {
     public void setCoref(boolean readCoref) {
         this.readCoref = readCoref;
     }
+    
+    public void setReadHeadline(boolean readHeadline) {
+        this.readHeadline = readHeadline;
+    }
+    
+    public void setReadDateline(boolean readDateline) {
+        this.readDateline = readDateline;
+    }
 
     /**
      * For testing only: Whether or not to enforce that the XML strictly match
@@ -150,7 +162,9 @@ public class AgigaPrefs implements Serializable {
                 && readBasicDeps == o.readBasicDeps
                 && readColDeps == o.readColDeps
                 && readColCcprocDeps == o.readColCcprocDeps
-                && readCoref == o.readCoref;
+                && readCoref == o.readCoref
+                && readHeadline == o.readHeadline
+                && readDateline == o.readDateline;
         }
         return false;
     }
@@ -159,7 +173,8 @@ public class AgigaPrefs implements Serializable {
     public int hashCode() {
         return Util.safeHashCode(readWord,
             readLemma, readOffsets, readPos, readNer, readNormNer,
-            readParse, readBasicDeps, readColDeps, readColCcprocDeps, readCoref);
+            readParse, readBasicDeps, readColDeps, readColCcprocDeps, 
+            readCoref, readHeadline, readDateline);
     }
     
 }

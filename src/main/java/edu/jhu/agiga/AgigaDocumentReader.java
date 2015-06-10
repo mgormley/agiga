@@ -121,6 +121,16 @@ class AgigaDocumentReader implements Iterable<AgigaDocument>, Iterator<AgigaDocu
             agigaDoc.setDocId(docId);
             agigaDoc.setType(docType);
             
+            // Read the headline (if it exists)
+            if (prefs.readHeadline) {
+                agigaDoc.setHeadline(parseHeadline(vn.cloneNav()));
+            }
+            
+            // Read the dateline (if it exists)
+            if (prefs.readDateline) {
+                agigaDoc.setDateline(parseDateline(vn.cloneNav()));
+            }
+            
             // Read the sentences
             log.finer("Reading sents");
             if (vn.toElement(VTDNav.FIRST_CHILD, AgigaConstants.SENTENCES)) {
@@ -212,6 +222,36 @@ class AgigaDocumentReader implements Iterable<AgigaDocument>, Iterator<AgigaDocu
             coref.add(agigaMention);
         }
         return coref;
+    }
+
+    /**
+     * Parses out the HEADLINE element, which is a parse of the dateline if it exists.
+     * 
+     * Assumes the position of vn is at a "DOC" tag
+     */
+    private String parseHeadline(VTDNav vn) throws NavException {
+        require (vn.matchElement(AgigaConstants.DOC));        
+        if (!vn.toElement(VTDNav.FIRST_CHILD, AgigaConstants.HEADLINE)) {
+            // If there is no headline annotation return the empty list
+            log.finer("No headline found");
+            return null;
+        }
+        return vn.toString(vn.getText()).trim();
+    }
+    
+    /**
+     * Parses out the DATELINE element, which is a parse of the dateline if it exists.
+     * 
+     * Assumes the position of vn is at a "DOC" tag
+     */
+    private String parseDateline(VTDNav vn) throws NavException {
+        require (vn.matchElement(AgigaConstants.DOC));        
+        if (!vn.toElement(VTDNav.FIRST_CHILD, AgigaConstants.DATELINE)) {
+            // If there is no dateline annotation return the empty list
+            log.finer("No dateline found");
+            return null;
+        }
+        return vn.toString(vn.getText()).trim();
     }
     
     public static void main(String args[]) throws Exception {
