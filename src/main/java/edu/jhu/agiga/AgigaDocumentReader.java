@@ -231,7 +231,7 @@ class AgigaDocumentReader implements Iterable<AgigaDocument>, Iterator<AgigaDocu
      */
     private String parseHeadline(VTDNav vn) throws NavException {
         require (vn.matchElement(AgigaConstants.DOC));        
-        if (!vn.toElement(VTDNav.FIRST_CHILD, AgigaConstants.HEADLINE)) {
+        if (!vn.toElement(VTDNav.FIRST_CHILD, AgigaConstants.HEADLINE) || vn.getText() == -1) {
             // If there is no headline annotation return the empty list
             log.finer("No headline found");
             return null;
@@ -246,7 +246,7 @@ class AgigaDocumentReader implements Iterable<AgigaDocument>, Iterator<AgigaDocu
      */
     private String parseDateline(VTDNav vn) throws NavException {
         require (vn.matchElement(AgigaConstants.DOC));        
-        if (!vn.toElement(VTDNav.FIRST_CHILD, AgigaConstants.DATELINE)) {
+        if (!vn.toElement(VTDNav.FIRST_CHILD, AgigaConstants.DATELINE) || vn.getText() == -1) {
             // If there is no dateline annotation return the empty list
             log.finer("No dateline found");
             return null;

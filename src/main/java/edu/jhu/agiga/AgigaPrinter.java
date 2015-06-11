@@ -49,6 +49,7 @@ public class AgigaPrinter {
                 { "coref", "Coreference resolution as SGML similar to MUC" },
                 { "stanford-deps", "toString() methods of Stanford dependency parse annotations" },
                 { "stanford-phrase-structure", "toString() method of Stanford phrase structure parses" },
+                { "headlines", "Headlines and Datelines" },
                 { "for-testing-only", "**For use in testing this API only**" } };
         for (String[] pair : options) {
             usage += String.format("\n    %-25s (%s)", pair[0], pair[1]);
@@ -89,6 +90,8 @@ public class AgigaPrinter {
             printStanfordDeps(inputFile);
         } else if (type.equals("stanford-phrase-structure")) {
             printStanfordPhraseStructure(inputFile);
+        } else if (type.equals("headlines")) {
+            printHeadlineDateline(inputFile, writer);
         } else if (type.equals("for-testing-only")) {
             printForTestingOnly(inputFile, writer);
         } else {
@@ -246,6 +249,23 @@ public class AgigaPrinter {
         log.info("Number of sentences: " + reader.getNumSents());
     }
 
+    private static void printHeadlineDateline(String inputFile, Writer writer) throws IOException {
+        // Read everything
+        AgigaPrefs prefs = new AgigaPrefs();
+        prefs.setAll(false);
+        prefs.setHeadline(true);
+        prefs.setDateline(true);
+        // Iterate through the docs, printing each one to stdout
+        StreamingDocumentReader dReader = new StreamingDocumentReader(inputFile, prefs);
+        log.info("Parsing XML for file: " + dReader.getFileId());
+        for (AgigaDocument doc : dReader) {
+            log.info("Parsing doc: id=" + doc.getDocId() + " type=" + doc.getType());
+            if (doc.getHeadline() != null) { System.out.println("HEADLINE: " + doc.getHeadline()); }
+            if (doc.getDateline() != null) { System.out.println("DATELINE: " + doc.getDateline()); }
+        }
+        log.info("Number of docs: " + dReader.getNumDocs());
+    }
+    
     private static void printForTestingOnly(String inputFile, Writer writer) throws IOException {
         // Read everything
         AgigaPrefs prefs = new AgigaPrefs();

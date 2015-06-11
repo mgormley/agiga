@@ -128,11 +128,11 @@ public class AgigaPrefs implements Serializable {
         this.readCoref = readCoref;
     }
     
-    public void setReadHeadline(boolean readHeadline) {
+    public void setHeadline(boolean readHeadline) {
         this.readHeadline = readHeadline;
     }
     
-    public void setReadDateline(boolean readDateline) {
+    public void setDateline(boolean readDateline) {
         this.readDateline = readDateline;
     }
 
