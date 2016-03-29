@@ -213,16 +213,16 @@ public class BasicAgigaSentence implements Serializable {
             writer.write(String.valueOf(i+1));
             writer.write("\t");
             //2    FORM    Word form or punctuation symbol.
-            writer.write(tok.getWord());
+            writer.write(tok.getWord().trim());
             writer.write("\t");
             //3    LEMMA   Lemma or stem (depending on particular data set) of word form, or an underscore if not available.
-            writer.write(tok.getLemma());
+            writer.write(tok.getLemma().trim());
             writer.write("\t");
             //4    CPOSTAG  Coarse-grained part-of-speech tag, where tagset depends on the language.
-            writer.write(tok.getPosTag());
+            writer.write(tok.getPosTag().trim());
             writer.write("\t");
             //5    POSTAG  Fine-grained part-of-speech tag, where the tagset depends on the language, or identical to the coarse-grained part-of-speech tag if not available.
-            writer.write(tok.getPosTag());
+            writer.write(tok.getPosTag().trim());
             writer.write("\t");
             //6    FEATS   Unordered set of syntactic and/or morphological features (depending on the particular language), separated by a vertical bar (|), or an underscore if not available.
             writer.write("_\t");
@@ -232,7 +232,7 @@ public class BasicAgigaSentence implements Serializable {
                 writer.write(String.valueOf(parents[i] + 1));
                 writer.write("\t");
                 //8    DEPREL  Dependency relation to the HEAD. The set of dependency relations depends on the particular language. Note that depending on the original treebank annotation, the dependency relation may be meaningfull or simply 'ROOT'.
-                writer.write(types[i]);
+                writer.write(types[i].trim());
                 writer.write("\t");
             } else {
                 writer.write("_\t_\t");
