@@ -220,46 +220,40 @@ class AgigaSentenceReader implements Iterable<AgigaSentence>, Iterator<AgigaSent
             
             // Read the word, lemma, token offsets, POS tag, NER tag, and
             // normalized NER
-            
+            //
+            // NOTE: By default (prefs.strict=false), we remove unexpected
+            // whitespace surrounding these fields.
+
             // We have to move to the word (first child) so that the next
             // sibling moves succeed.
             require(vn.toElement(VTDNav.FC, AgigaConstants.WORD));
             if (prefs.readWord) {
                 String word = vn.toString(vn.getText());
-                agigaToken.setWord(word);
+                agigaToken.setWord(prefs.strict ? word : word.trim());
             }
 
             if (prefs.readLemma) {
                 require(vn.toElement(VTDNav.NS, AgigaConstants.LEMMA));
                 String lemma = vn.toString(vn.getText());
-                agigaToken.setLemma(lemma);
+                agigaToken.setLemma(prefs.strict ? lemma : lemma.trim());
             }
 
             if (prefs.readOffsets) {
                 require(vn.toElement(VTDNav.NS, AgigaConstants.CHARACTER_OFFSET_BEGIN));
-                int charOffBegin;
-                if (prefs.strict) {
-                    charOffBegin = Integer.parseInt(vn.toString(vn.getText()));
-                } else {
-                    // Remove unexpected whitespace surrounding the integer.
-                    charOffBegin = Integer.parseInt(vn.toString(vn.getText()).trim());
-                }
+                String charOffBeginStr = vn.toString(vn.getText());
+                int charOffBegin = Integer.parseInt(prefs.strict ? charOffBeginStr : charOffBeginStr.trim());
                 agigaToken.setCharOffBegin(charOffBegin);
+                
                 require(vn.toElement(VTDNav.NS, AgigaConstants.CHARACTER_OFFSET_END));
-                int charOffEnd;
-                if (prefs.strict) {
-                    charOffEnd = Integer.parseInt(vn.toString(vn.getText()));
-                } else {
-                    // Remove unexpected whitespace surrounding the integer.
-                    charOffEnd = Integer.parseInt(vn.toString(vn.getText()).trim());
-                }
+                String charOffEndStr = vn.toString(vn.getText());
+                int charOffEnd = Integer.parseInt(prefs.strict ? charOffEndStr : charOffEndStr.trim());
                 agigaToken.setCharOffEnd(charOffEnd);
             }
 
             if (prefs.readPos) {
                 require(vn.toElement(VTDNav.NS, AgigaConstants.POS));
                 String posTag = vn.toString(vn.getText());
-                agigaToken.setPosTag(posTag);
+                agigaToken.setPosTag(prefs.strict ? posTag : posTag.trim());
             }
 
             if (prefs.readNer) {
@@ -272,7 +266,7 @@ class AgigaSentenceReader implements Iterable<AgigaSentence>, Iterator<AgigaSent
                     if (vn.toElement(VTDNav.NS, AgigaConstants.NER)) {
                         nerTag = vn.toString(vn.getText());
                     }
-                    agigaToken.setNerTag(nerTag);
+                    agigaToken.setNerTag(nerTag.trim());
                 }
             }
             if (prefs.readNormNer) {
@@ -281,7 +275,7 @@ class AgigaSentenceReader implements Iterable<AgigaSentence>, Iterator<AgigaSent
                 if (vn.toElement(VTDNav.NS, AgigaConstants.NORM_NER)) {
                     normNer = vn.toString(vn.getText());
                 }
-                agigaToken.setNormNer(normNer);
+                agigaToken.setNormNer(prefs.strict ? normNer : normNer.trim());
             }
 
             agigaTokens.add(agigaToken);
@@ -304,7 +298,7 @@ class AgigaSentenceReader implements Iterable<AgigaSentence>, Iterator<AgigaSent
         require (vn.toElement(VTDNav.FC, AgigaConstants.PARSE));
         String parseText = vn.toString(vn.getText());
         
-        return parseText;
+        return prefs.strict ? parseText : parseText.trim();
     }
 
     /**
@@ -326,6 +320,7 @@ class AgigaSentenceReader implements Iterable<AgigaSentence>, Iterator<AgigaSent
         while (basicDepRelAp.iterate()) {
             // Read the type, governor, and dependent
             String type = vn.toString(vn.getAttrVal(AgigaConstants.DEP_TYPE));
+            type = prefs.strict ? type : type.trim();
             require (vn.toElement(VTDNav.FC, AgigaConstants.GOVERNOR));
             int governorId = vn.parseInt(vn.getText());
             require (vn.toElement(VTDNav.NS, AgigaConstants.DEPENDENT));

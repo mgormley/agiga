@@ -118,8 +118,8 @@ class AgigaDocumentReader implements Iterable<AgigaDocument>, Iterator<AgigaDocu
             log.finer("doc type=" + docType);
     
             AgigaDocument agigaDoc = new AgigaDocument(prefs);
-            agigaDoc.setDocId(docId);
-            agigaDoc.setType(docType);
+            agigaDoc.setDocId(prefs.strict ? docId : docId.trim());
+            agigaDoc.setType(prefs.strict ? docType : docType.trim());
             
             // Read the headline (if it exists)
             if (prefs.readHeadline) {
@@ -236,7 +236,8 @@ class AgigaDocumentReader implements Iterable<AgigaDocument>, Iterator<AgigaDocu
             log.finer("No headline found");
             return null;
         }
-        return vn.toString(vn.getText()).trim();
+        String headline = vn.toString(vn.getText());
+        return prefs.strict ? headline : headline.trim();
     }
     
     /**
@@ -251,7 +252,8 @@ class AgigaDocumentReader implements Iterable<AgigaDocument>, Iterator<AgigaDocu
             log.finer("No dateline found");
             return null;
         }
-        return vn.toString(vn.getText()).trim();
+        String dateline = vn.toString(vn.getText());
+        return prefs.strict ? dateline : dateline.trim();
     }
     
     public static void main(String args[]) throws Exception {
