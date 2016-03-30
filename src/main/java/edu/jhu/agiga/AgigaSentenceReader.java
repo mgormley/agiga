@@ -265,8 +265,9 @@ class AgigaSentenceReader implements Iterable<AgigaSentence>, Iterator<AgigaSent
                     String nerTag = null;
                     if (vn.toElement(VTDNav.NS, AgigaConstants.NER)) {
                         nerTag = vn.toString(vn.getText());
+                        nerTag = nerTag.trim();
                     }
-                    agigaToken.setNerTag(nerTag.trim());
+                    agigaToken.setNerTag(nerTag);
                 }
             }
             if (prefs.readNormNer) {
@@ -274,8 +275,9 @@ class AgigaSentenceReader implements Iterable<AgigaSentence>, Iterator<AgigaSent
                 String normNer = null;
                 if (vn.toElement(VTDNav.NS, AgigaConstants.NORM_NER)) {
                     normNer = vn.toString(vn.getText());
+                    normNer = prefs.strict ? normNer : normNer.trim();
                 }
-                agigaToken.setNormNer(prefs.strict ? normNer : normNer.trim());
+                agigaToken.setNormNer(normNer);
             }
 
             agigaTokens.add(agigaToken);
