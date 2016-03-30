@@ -54,9 +54,7 @@ usage: java edu.jhu.agiga.AgigaPrinter <type> <gzipped input file>
 For example, to print part-of-speech tags for the file
 nyt_eng_199911.xml.gz, we could run:
 
-java -cp build/agiga-<version number>.jar:lib/* edu.jhu.agiga.AgigaPrinter pos annotated_gigaword/nyt_eng_199911.xml.gz
-
-where <version number> is replaced with the latest version.
+mvn exec:java -Dexec.mainClass="edu.jhu.agiga.AgigaPrinter" -Dexec.args="pos /export/corpora/LDC/LDC2012T21/data/xml/afp_eng_199405.xml.gz"
 
 -------------------
 Java API          :
